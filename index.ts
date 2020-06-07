@@ -14,8 +14,6 @@ class Pubsub {
     while (len--) {
       subscribers[len].func(topic, args);
     }
-
-    return this;
   }
 
   public subscribe(topic, func) {
