@@ -21,7 +21,7 @@ class Pubsub {
     }
   }
 
-  public subscribe(topic, func): string {
+  public subscribe(topic: string, func: Function): string {
     if (!this.topics[topic]) {
       this.topics[topic] = [];
     }
@@ -35,7 +35,7 @@ class Pubsub {
     return token;
   }
 
-  public unsubscribe(token): string {
+  public unsubscribe(token: string): string {
     for (const topic in this.topics) {
       if (this.topics[topic]) {
         for (let i = 0, j = this.topics[topic].length; i < j; i++) {
