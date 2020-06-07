@@ -36,11 +36,11 @@ class Pubsub {
   }
 
   public unsubscribe(token): string {
-    for (const m in this.topics) {
-      if (this.topics[m]) {
-        for (let i = 0, j = this.topics[m].length; i < j; i++) {
-          if (this.topics[m][i].token === token) {
-            this.topics[m].splice(i, 1);
+    for (const topic in this.topics) {
+      if (this.topics[topic]) {
+        for (let i = 0, j = this.topics[topic].length; i < j; i++) {
+          if (this.topics[topic][i].token === token) {
+            this.topics[topic].splice(i, 1);
             return token;
           }
         }
