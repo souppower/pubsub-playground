@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 interface ISubscriber {
   token: string;
   func: Function;
@@ -5,8 +7,6 @@ interface ISubscriber {
 
 class Pubsub {
   private topics: { [key: string]: ISubscriber[] } = {};
-
-  private subUid = -1;
 
   public publish(topic: string, args: any) {
     if (!this.topics[topic]) {
@@ -26,7 +26,7 @@ class Pubsub {
       this.topics[topic] = [];
     }
 
-    const token = (++this.subUid).toString();
+    const token = uuidv4();
     this.topics[topic].push({
       token: token,
       func: func,
