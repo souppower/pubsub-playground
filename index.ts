@@ -1,20 +1,14 @@
-const pubsub = {
-  publish: undefined,
-  subscribe: undefined,
-  unsubscribe: undefined,
-};
+class Pubsub {
+  private topics = {};
 
-(function (myObject) {
-  const topics = {};
+  private subUid = -1;
 
-  let subUid = -1;
-
-  myObject.publish = function (topic, args) {
-    if (!topics[topic]) {
+  public publish(topic, args) {
+    if (!this.topics[topic]) {
       return false;
     }
 
-    const subscribers = topics[topic];
+    const subscribers = this.topics[topic];
     let len = subscribers ? subscribers.length : 0;
 
     while (len--) {
@@ -22,35 +16,37 @@ const pubsub = {
     }
 
     return this;
-  };
+  }
 
-  myObject.subscribe = function (topic, func) {
-    if (!topics[topic]) {
-      topics[topic] = [];
+  public subscribe(topic, func) {
+    if (!this.topics[topic]) {
+      this.topics[topic] = [];
     }
 
-    const token = (++subUid).toString();
-    topics[topic].push({
+    const token = (++this.subUid).toString();
+    this.topics[topic].push({
       token: token,
       func: func,
     });
 
     return token;
-  };
+  }
 
-  myObject.unsubscribe = function (token) {
-    for (const m in topics) {
-      if (topics[m]) {
-        for (let i = 0, j = topics[m].length; i < j; i++) {
-          if (topics[m][i].token === token) {
-            topics[m].splice(i, 1);
+  public unsubscribe(token) {
+    for (const m in this.topics) {
+      if (this.topics[m]) {
+        for (let i = 0, j = this.topics[m].length; i < j; i++) {
+          if (this.topics[m][i].token === token) {
+            this.topics[m].splice(i, 1);
             return token;
           }
         }
       }
     }
-  };
-})(pubsub);
+  }
+}
+
+const pubsub = new Pubsub();
 
 const messageLogger = function (topics, data) {
   console.log(`Logging: ${topics}: ${data}`);
