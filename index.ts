@@ -1,9 +1,14 @@
+interface ISubscriber {
+  token: string;
+  func: Function;
+}
+
 class Pubsub {
-  private topics = {};
+  private topics: { [key: string]: ISubscriber[] } = {};
 
   private subUid = -1;
 
-  public publish(topic, args) {
+  public publish(topic: string, args: any) {
     if (!this.topics[topic]) {
       return false;
     }
@@ -16,7 +21,7 @@ class Pubsub {
     }
   }
 
-  public subscribe(topic, func) {
+  public subscribe(topic, func): string {
     if (!this.topics[topic]) {
       this.topics[topic] = [];
     }
@@ -30,7 +35,7 @@ class Pubsub {
     return token;
   }
 
-  public unsubscribe(token) {
+  public unsubscribe(token): string {
     for (const m in this.topics) {
       if (this.topics[m]) {
         for (let i = 0, j = this.topics[m].length; i < j; i++) {
